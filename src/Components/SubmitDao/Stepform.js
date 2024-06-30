@@ -62,17 +62,20 @@ const StepForm = () => {
     },
     transport: http("https://base-sepolia.blockpi.network/v1/rpc/public"), // Passing RPC URL to http function
   });
-  const walletClient = createWalletClient({
-    chain: {
-      id: 84532, // BTTC Donau testnet chain ID
-      rpcUrls: {
-        public: "https://base-sepolia.blockpi.network/v1/rpc/public",
-        websocket: "https://base-sepolia.blockpi.network/v1/rpc/public", // WebSocket URL (optional)
-      },
-    },
-    transport: custom(window ? window.ethereum : ""),
-  });
 
+  let walletClient;
+  if (typeof window !== "undefined" && window.ethereum) {
+    walletClient = createWalletClient({
+      chain: {
+        id: 84532, // BTTC Donau testnet chain ID
+        rpcUrls: {
+          public: "https://base-sepolia.blockpi.network/v1/rpc/public",
+          websocket: "https://base-sepolia.blockpi.network/v1/rpc/public", // WebSocket URL (optional)
+        },
+      },
+      transport: custom(window ? window.ethereum : ""),
+    });
+  }
   const postTransaction = async (Transactionobj) => {
     try {
       const response = await fetch(
