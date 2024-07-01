@@ -21,6 +21,9 @@ function MainPage() {
     }
   };
   const fetchDataFromApi = async (address) => {
+    console.log(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`
+    );
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`
