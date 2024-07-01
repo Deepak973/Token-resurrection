@@ -26,11 +26,9 @@ function MainPage() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`,
         {
-          params: { address: address },
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       );
       console.log(response);
