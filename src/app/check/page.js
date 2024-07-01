@@ -26,9 +26,11 @@ function MainPage() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`,
         {
+          params: { address: address },
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
       console.log(response);
@@ -71,7 +73,10 @@ function MainPage() {
   };
 
   return (
-    <div style={{minHeight:"70vh"}} className="maindiv flex justify-center items-center py-4">
+    <div
+      style={{ minHeight: "70vh" }}
+      className="maindiv flex justify-center items-center py-4"
+    >
       <div
         className={`${formstyle.checkpage} w-full lg:w-3/4 xl:w-2/3 bg-white px-4 py-4 md:px-8 md:py-8 rounded-3xl shadow-2xl text-center h-auto mt-12`}
       >
