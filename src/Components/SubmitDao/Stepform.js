@@ -79,7 +79,7 @@ const StepForm = () => {
   const postTransaction = async (Transactionobj) => {
     try {
       const response = await fetch(
-        "{process.env.NEXT_PUBLIC_BACKEND_URL}/api/transactions",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/transactions`,
         {
           method: "POST",
           headers: {
@@ -232,7 +232,7 @@ const StepForm = () => {
       console.log(Transactionobj);
 
       const response = await fetch(
-        "{process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals`,
         {
           method: "POST",
           headers: {
