@@ -4,6 +4,7 @@ import AddressList from "../../Components/Check/checkAddress"; // Ensure the cor
 import formstyle from "../../Components/SubmitDao/stepfrom.module.css";
 import { useAccount, useConnect } from "wagmi";
 import { message } from "antd";
+import axios from "axios";
 
 function MainPage() {
   const [showWalletConnect, setShowWalletConnect] = useState(true);
@@ -21,19 +22,21 @@ function MainPage() {
     }
   };
   const fetchDataFromApi = async (address) => {
-    console.log(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`
-    );
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      const data = await response.json();
+      console.log(response);
+      const data = response.data;
       console.log(data);
       if (data.tokens && data.tokens.length > 0) {
         setTokens(data.tokens);
         setShowAddressList(true);
-        console.log("first");
       } else if (data.message === "User not found for the specified address") {
         message.info("No Attestation or Claims Available at the moment");
         console.log("first");

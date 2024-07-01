@@ -26,6 +26,7 @@ import { keccak256 } from "viem";
 import AttestationDeployerABI from "../../ABI/TokenResurrectionFactoryABI.json";
 import { BrowserProvider, ethers, isAddress } from "ethers";
 import { SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
+import axios from "axios";
 
 // import axios from "axios";
 
@@ -78,23 +79,26 @@ const StepForm = () => {
   }
   const postTransaction = async (Transactionobj) => {
     try {
-      const response = await fetch(
+      const response = axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/transactions`,
+        Transactionobj,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(Transactionobj),
         }
       );
-      const data = await response.json();
+      const res = await response;
+      const data = res.data;
+      console.log(data);
+
       setTotalamount(data.totalAmount);
       setTransactions(data.transactions);
       console.log(data.transactions);
       const gettnx = data.transactions;
       setHolderscount(gettnx.length);
-      if (response.ok) {
+      console.log(response);
+      if (res.status === 200) {
         console.log("Transaction posted successfully!");
         if (data.totalAmount) {
           console.log(Transactionobj.token);
@@ -231,17 +235,17 @@ const StepForm = () => {
 
       console.log(Transactionobj);
 
-      const response = await fetch(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals`,
+        Transactionobj,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(Transactionobj),
         }
       );
-      if (response.ok) {
+
+      if (response.status === 200) {
         console.log("Token submission successful!");
         setSubmissionStatus("success");
         message.info("Proposal  submission successful");

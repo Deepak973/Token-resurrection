@@ -2,6 +2,7 @@ import { useState } from "react";
 import AddressList from "../../Components/Check/addressList";
 import formstyle from "../../Components/SubmitDao/stepfrom.module.css";
 import { Button, Modal, message, Skeleton, Steps, theme, Tooltip } from "antd";
+import axios from "axios";
 
 function AnotherComponent({ onGoBack }) {
   const [walletAddress, setWalletAddress] = useState("");
@@ -16,14 +17,19 @@ function AnotherComponent({ onGoBack }) {
 
   const fetchDataFromApi = async (address) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(response);
-      if (response.status === 404) {
-        message.info("No Attestation or Claims Available at the moment");
+      if (response.status === 200) {
+        message.info(response.data.error);
       } else {
-        const data = await response.json();
+        const data = response.data;
         if (data.tokens && data.tokens.length > 0) {
           setTokens(data.tokens); // Set the token data
           setShowAddressList(true);
