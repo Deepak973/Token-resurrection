@@ -34,7 +34,13 @@ const Alltabs = () => {
   const handleActiveClick = () => {
     setActiveTab("1");
     fetchData(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/active`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/active`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
   };
 
