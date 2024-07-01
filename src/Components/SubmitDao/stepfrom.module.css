@@ -231,7 +231,7 @@
   align-items: center;
 }
 .checkpage {
-  width: 100%;
+  /* width: 100%; */
   min-height: 360px;
   display: flex;
   flex-direction: column;
