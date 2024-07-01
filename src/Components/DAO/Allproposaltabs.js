@@ -34,21 +34,21 @@ const Alltabs = () => {
   const handleActiveClick = () => {
     setActiveTab("1");
     fetchData(
-      "{process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/active"
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/active`
     );
   };
 
   const handleCompletedClick = () => {
     setActiveTab("2");
     fetchData(
-      "{process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/approved"
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/approved`
     );
   };
 
   const handleRejectedClick = () => {
     setActiveTab("3");
     fetchData(
-      "{process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/rejected"
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/status/rejected`
     );
   };
 
