@@ -18,7 +18,7 @@ function AnotherComponent({ onGoBack }) {
   const fetchDataFromApi = async (address) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user-transactions?user=${address}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -26,17 +26,21 @@ function AnotherComponent({ onGoBack }) {
         }
       );
       console.log(response);
-      if (response.status === 200) {
-        message.info(response.data.error);
+      if (response.status !== 200) {
+        console.log("first");
+        message.info("No Attestation or Claims Available at the moment");
       } else {
+        console.log("goin in else");
         const data = response.data;
-        if (data.tokens && data.tokens.length > 0) {
-          setTokens(data.tokens); // Set the token data
+        console.log(data);
+        if (data && data.length > 0) {
+          console.log("first");
+          setTokens(data); // Set the token data
           setShowAddressList(true);
         } else {
           setIsValid(false);
         }
-        console.log(data.tokens);
+        console.log(data);
       } // Log the fetched data to the console
     } catch (error) {
       console.error("Error fetching data from API:", error);

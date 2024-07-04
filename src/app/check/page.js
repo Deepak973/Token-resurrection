@@ -55,7 +55,7 @@ function MainPage() {
   };
 
   const handleCheckAddress = () => {
-    fetchDataFromApi(address);
+    // fetchDataFromApi(address);
     setShowWalletConnect(false);
   };
 

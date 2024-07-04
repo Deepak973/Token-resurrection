@@ -6,9 +6,14 @@ import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { BrowserProvider } from "ethers";
 import { Purple_Purse } from "next/font/google";
 import Modal from "react-modal";
+import { useAccount } from "wagmi";
+import MerkleTree from "merkletreejs";
+import Web3 from "web3";
+import keccak256 from "keccak256";
 
 function AddressList({ onGoBack, tokens }) {
   const [popupMessage, setPopupMessage] = useState("");
+  const { address } = useAccount();
 
   let provider;
   const setProvider = async () => {
@@ -51,6 +56,10 @@ function AddressList({ onGoBack, tokens }) {
     const signer = await provider.getSigner();
     eas.connect(signer);
 
+    const proof = await getMerkleProof(details.addresses, address);
+
+    console.log(proof);
+
     const schemaEncoder = new SchemaEncoder(
       "address lockedContractAddress, string aggrement, address recovertokenAddress ,string tokenSymbol,bytes proof"
     );
@@ -58,12 +67,12 @@ function AddressList({ onGoBack, tokens }) {
     const encodedData = schemaEncoder.encodeData([
       {
         name: "lockedContractAddress",
-        value: details.contractAddress,
+        value: details.to,
         type: "address",
       },
       {
         name: "aggrement",
-        value: `I agree to receive 70% of my locked ${details.amount} tokens back, with 20% given to the issuer and 10% retained by Token Resurrection for facilitating the recovery process.`,
+        value: `I agree to receive 70% of my locked ${details.totalAmount} tokens back, with 20% given to the issuer and 10% retained by Token Resurrection for facilitating the recovery process.`,
         type: "string",
       },
       {
@@ -74,14 +83,12 @@ function AddressList({ onGoBack, tokens }) {
       { name: "tokenSymbol", value: "DAI", type: "string" },
       {
         name: "proof",
-        value:
-          "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000139a01635c6a38f8beb0adde454f205fffbb2157797bf1980f8f93a5f70c9f8e6",
+        value: proof,
         type: "bytes",
       },
     ]);
 
-    const schemaUID =
-      "0x725c0d06d06106490197358ae05609cf8fa7989e6bcf68b36b3b3b69396a9806";
+    const schemaUID = details.schemUid;
 
     const tx = await eas.attest({
       schema: schemaUID,
@@ -107,6 +114,29 @@ function AddressList({ onGoBack, tokens }) {
         </a>
       </>
     );
+  };
+
+  const getMerkleProof = async (addresses, address) => {
+    // Create a Merkle tree
+    var web3 = new Web3();
+    console.log(addresses);
+    const leaves = addresses.map((addr) => keccak256(addr));
+    console.log(leaves);
+
+    const merkleTree = new MerkleTree(leaves, keccak256, {
+      sortPairs: true,
+      sortLeaves: true,
+    });
+    console.log(merkleTree);
+    console.log(address);
+    const hexPrrof = merkleTree.getHexProof(keccak256(address));
+    console.log(hexPrrof);
+    const PriceHookExtraData = web3.eth.abi.encodeParameters(
+      ["bytes32[] finalProof"],
+      [hexPrrof]
+    );
+    console.log("proof", PriceHookExtraData);
+    return PriceHookExtraData;
   };
 
   const handleClaim = (index) => {
@@ -141,13 +171,13 @@ function AddressList({ onGoBack, tokens }) {
             {tokens.map((token, index) => (
               <tr key={index} className="bg-white hover:bg-gray-100">
                 <td className="border px-2 py-2 md:px-4 md:py-2 font-semibold">
-                  {token.symbol}
+                  {token.token}
                 </td>
                 <td className="border px-2 py-2 md:px-4 md:py-2 font-semibold">
-                  {token.amount}
+                  {token.totalAmount}
                 </td>
                 <td className="border px-2 py-2 md:px-4 md:py-2 font-semibold break-words">
-                  {token.contractAddress}
+                  {token.to}
                 </td>
                 <td className="border px-2 py-2 md:px-4 md:py-2">
                   <button

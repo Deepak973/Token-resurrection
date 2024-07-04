@@ -97,7 +97,7 @@ const StepForm = () => {
       console.log(data.transactions);
       const gettnx = data.transactions;
       setHolderscount(gettnx.length);
-      console.log(response);
+      console.log(res);
       if (res.status === 200) {
         console.log("Transaction posted successfully!");
         if (data.totalAmount) {
@@ -179,6 +179,23 @@ const StepForm = () => {
       return;
     }
 
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/checkproposals?tokenAddress=${selectedToken.tokenAddress}&contractAddress=${selectedToken.contractAddress}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("calling");
+    if (response.status === 200) {
+      console.log("submission can be added");
+    } else {
+      setSubmissionStatus("error");
+      setErrorMessage(response.message);
+      message.info("Proposal Already exists");
+      return;
+    }
     try {
       console.log("trying to post");
       setSubmitting(true);
@@ -231,6 +248,7 @@ const StepForm = () => {
         selectedToken: selectedToken,
         ResolverAddress: resolverAddress,
         schemUid: SchemaUid,
+        addresses,
       };
 
       console.log(Transactionobj);
@@ -245,14 +263,16 @@ const StepForm = () => {
         }
       );
 
-      if (response.status === 200) {
+      console.log(response);
+
+      if (response.status === 201) {
         console.log("Token submission successful!");
         setSubmissionStatus("success");
         message.info("Proposal  submission successful");
       } else {
         console.error("Token submission failed:", response.statusText);
         setSubmissionStatus("error");
-        setErrorMessage(response.statusText);
+        setErrorMessage(response.message);
         message.info("Proposal  submission failed");
       }
     } catch (error) {
