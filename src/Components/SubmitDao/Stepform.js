@@ -79,6 +79,10 @@ const StepForm = () => {
   }
   const postTransaction = async (Transactionobj) => {
     try {
+      setTotalamount("");
+      setHolderscount("");
+      setTransactions([]);
+
       const response = axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/transactions`,
         Transactionobj,
@@ -86,6 +90,7 @@ const StepForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          timeout: 60000,
         }
       );
       const res = await response;
