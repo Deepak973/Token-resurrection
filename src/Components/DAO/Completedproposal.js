@@ -46,12 +46,16 @@ function Completedproposal({ data }) {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = data.filter(
-    (item) =>
-      item.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tokenName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.contractAddress.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  let filteredData = [];
+
+  if (data.message === "") {
+    filteredData = data.filter(
+      (item) =>
+        item.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.tokenName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.contractAddress.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
 
   return (
     <div className={propstyle.outerdivprop1}>

@@ -45,7 +45,7 @@ function Activeproposal({ data }) {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
+  console.log(data);
   const filteredData = data.filter(
     (item) =>
       item.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
