@@ -52,11 +52,10 @@ function Rejectedproposal({ data }) {
       item.tokenName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.contractAddress.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
   return (
     <div className={propstyle.outerdivprop1}>
       <div className={propstyle.maindivofproposal1}>
-        <div className={propstyle.headingprop}>Active Proposal</div>
+        <div className={propstyle.headingprop}>Rejected Proposal</div>
         <div className={propstyle.searchbardiv}>
           <input
             type="text"
@@ -84,13 +83,15 @@ function Rejectedproposal({ data }) {
               </thead>
               <tbody className="text-center">
                 {filteredData.map((item, index) => (
+                  // {data.map((item, index) => (
                   <tr key={index}>
                     <td>
                       {item.tokenAddress.substring(0, 6)}...
                       {item.tokenAddress.substring(
                         item.tokenAddress.length - 4
-                      )}
+                      )}{" "}
                       <Tooltip title="copy">
+                        {" "}
                         <button
                           onClick={() => copyToClipboard(item.tokenAddress)}
                         >
@@ -103,8 +104,9 @@ function Rejectedproposal({ data }) {
                       {item.contractAddress.substring(0, 6)}...
                       {item.contractAddress.substring(
                         item.contractAddress.length - 4
-                      )}
+                      )}{" "}
                       <Tooltip title="copy">
+                        {" "}
                         <button
                           onClick={() => copyToClipboard(item.contractAddress)}
                         >
@@ -112,18 +114,16 @@ function Rejectedproposal({ data }) {
                         </button>
                       </Tooltip>
                     </td>
-                    <td style={{ color: "#2EBF82", fontWeight: "800" }}>
+                    <td style={{ color: "#1640D4", fontWeight: "800" }}>
                       <strong>{item.status}</strong>
                     </td>
                     <td>
-                      <Tooltip title="Click to view proposal details">
-                        <button
-                          className="hover:font-bold"
-                          onClick={() => openModal(item)}
-                        >
-                          View <strong>↗</strong>
-                        </button>
-                      </Tooltip>
+                      <button
+                        className="hover:font-bold"
+                        onClick={() => openModal(item)}
+                      >
+                        View ↗
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -202,7 +202,9 @@ function Rejectedproposal({ data }) {
             </div>
             <div className="flex justify-around">
               {/* <button className={propstyle.buttonin2step}>Accept</button>
-              <button className={propstyle.buttonin3step} onClick={closeModal}>Close</button> */}
+              <button className={propstyle.buttonin3step} onClick={closeModal}>
+                Close
+              </button> */}
             </div>
           </div>
         )}
