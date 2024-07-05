@@ -3,7 +3,7 @@ import formstyle from "../../Components/SubmitDao/stepfrom.module.css";
 import "../../app/globals.css";
 import { message, Tooltip } from "antd";
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
-import { BrowserProvider } from "ethers";
+import { BrowserProvider, formatUnits } from "ethers";
 import { Purple_Purse } from "next/font/google";
 import Modal from "react-modal";
 import { useAccount } from "wagmi";
@@ -207,10 +207,10 @@ function AddressList({ onGoBack, tokens }) {
         <table className="min-w-full table-auto border-collapse">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border px-2 py-2 md:px-4 md:py-2">Symbol</th>
+              <th className="border px-2 py-2 md:px-4 md:py-2">Token</th>
               <th className="border px-2 py-2 md:px-4 md:py-2">Amount</th>
               <th className="border px-2 py-2 md:px-4 md:py-2">
-                Contract Address
+                Locked in (Contract Address)
               </th>
               <th className="border px-2 py-2 md:px-4 md:py-2">Actions</th>
             </tr>
@@ -222,7 +222,9 @@ function AddressList({ onGoBack, tokens }) {
                   {token.token}
                 </td>
                 <td className="border px-2 py-2 md:px-4 md:py-2 font-semibold">
-                  {token.totalAmount}
+                  {token.token === "USDC"
+                    ? (+formatUnits(token.totalAmount, 6)).toFixed(4)
+                    : (+formatUnits(token.totalAmount, 18)).toFixed(4)}
                 </td>
                 <td className="border px-2 py-2 md:px-4 md:py-2 font-semibold break-words">
                   {token.to}

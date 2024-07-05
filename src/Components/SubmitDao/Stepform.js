@@ -90,7 +90,7 @@ const StepForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          timeout: 60000,
+          timeout: 180000,
         }
       );
       const res = await response;
