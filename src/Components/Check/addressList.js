@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import formstyle from "../../Components/SubmitDao/stepfrom.module.css";
 import "../../app/globals.css";
-import { Tooltip } from "antd";
+import { message, Tooltip } from "antd";
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { BrowserProvider } from "ethers";
 import { Purple_Purse } from "next/font/google";
@@ -56,7 +56,10 @@ function AddressList({ onGoBack, tokens }) {
     const signer = await provider.getSigner();
     eas.connect(signer);
 
-    const proof = await getMerkleProof(details.addresses, address);
+    const proof = await getMerkleProof(
+      details.addresses,
+      "0x5A8a9e57f197778A7E36E26E4f1bce94Eb1F95FC"
+    );
 
     console.log(proof);
 
@@ -89,31 +92,75 @@ function AddressList({ onGoBack, tokens }) {
     ]);
 
     const schemaUID = details.schemUid;
+    let tx = "";
+    try {
+      console.log("attesting");
+      // tx = await eas.attest({
+      //   schema: schemaUID,
+      //   data: {
+      //     recipient: "0x324e839ECCe8226DFf17d0056874F53355e43095",
+      //     expirationTime: 0,
+      //     revocable: false, // Be aware that if your schema is not revocable, this MUST be false
+      //     data: encodedData,
+      //   },
+      // });
 
-    const tx = await eas.attest({
-      schema: schemaUID,
-      data: {
-        recipient: "0x324e839ECCe8226DFf17d0056874F53355e43095",
-        expirationTime: 0,
-        revocable: false, // Be aware that if your schema is not revocable, this MUST be false
-        data: encodedData,
-      },
-    });
+      tx = eas
+        .attest({
+          schema: schemaUID,
+          data: {
+            recipient: "0x324e839ECCe8226DFf17d0056874F53355e43095",
+            expirationTime: 0,
+            revocable: false, // Be aware that if your schema is not revocable, this MUST be false
+            data: encodedData,
+          },
+        })
+        .then(async (tx) => {
+          // Handle the result of the promise here
+          console.log("invalid proof");
+          if (tx.receipt === undefined) {
+            message.info(
+              "Invalid proof given. make sure you are connrected with the correct address "
+            );
+          } else {
+            const newAttestationUID = tx.receipt;
+            console.log("New attestation UID:", newAttestationUID);
+            setPopupMessage(
+              <>
+                View your attestation{" "}
+                <a
+                  href={`https://base-sepolia.easscan.org/attestation/view/${newAttestationUID}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  here
+                </a>
+              </>
+            );
+          }
+        })
+        .catch((error) => {
+          // Handle any errors here
+          console.error(error);
+        });
+    } catch (e) {
+      console.log("catching");
+    }
 
-    const newAttestationUID = await tx.wait();
-    console.log("New attestation UID:", newAttestationUID);
-    setPopupMessage(
-      <>
-        View your attestation{" "}
-        <a
-          href={`https://base-sepolia.easscan.org/attestation/view/${newAttestationUID}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          here
-        </a>
-      </>
-    );
+    // const newAttestationUID = await tx.wait();
+    // console.log("New attestation UID:", newAttestationUID);
+    // setPopupMessage(
+    //   <>
+    //     View your attestation{" "}
+    //     <a
+    //       href={`https://base-sepolia.easscan.org/attestation/view/${newAttestationUID}`}
+    //       target="_blank"
+    //       rel="noopener noreferrer"
+    //     >
+    //       here
+    //     </a>
+    //   </>
+    // );
   };
 
   const getMerkleProof = async (addresses, address) => {
