@@ -254,6 +254,8 @@ const StepForm = () => {
         ResolverAddress: resolverAddress,
         schemUid: SchemaUid,
         addresses,
+        totalAmount: Totalamount,
+        totalAccount: getHolderscount,
       };
 
       console.log(Transactionobj);

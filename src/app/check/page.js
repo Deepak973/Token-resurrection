@@ -24,7 +24,7 @@ function MainPage() {
   const fetchDataFromApi = async (address) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user?address=${address}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user-transactions?user=${address}`,
         {
           headers: {
             "Content-Type": "application/json",

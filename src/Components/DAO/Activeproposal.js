@@ -171,6 +171,18 @@ function Activeproposal({ data }) {
               </div>
             </div>
             <div className={propstyle.divdetail}>
+              <div className={propstyle.titledetail}>TVL</div>
+              <div className={propstyle.titlecontent}>
+                {selectedData.totalAmount}
+              </div>
+            </div>
+            <div className={propstyle.divdetail}>
+              <div className={propstyle.titledetail}>Total Holders</div>
+              <div className={propstyle.titlecontent}>
+                {selectedData.totalAccount}
+              </div>
+            </div>
+            <div className={propstyle.divdetail}>
               <div className={propstyle.titledetail}>EAS schema UID</div>
               <div className={propstyle.titlecontent}>
                 <a
