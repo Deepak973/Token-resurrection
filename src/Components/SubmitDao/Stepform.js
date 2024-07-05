@@ -211,9 +211,9 @@ const StepForm = () => {
       });
       const root = merkleTree.getRoot().toString("hex");
       console.log(root);
-      // const merkelRootFinal = "0x" + root;
-      const merkelRootFinal =
-        "0x416efecf1c9b69224e4fe71f5afd2f15960ec5c2f2503f1c28372f7f02e60c26";
+      const merkelRootFinal = "0x" + root;
+      // const merkelRootFinal =
+      //   0x+root;
 
       console.log(merkelRootFinal);
 

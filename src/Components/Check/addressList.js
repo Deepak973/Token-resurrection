@@ -120,6 +120,7 @@ function AddressList({ onGoBack, tokens }) {
     // Create a Merkle tree
     var web3 = new Web3();
     console.log(addresses);
+    console.log(address);
     const leaves = addresses.map((addr) => keccak256(addr));
     console.log(leaves);
 
