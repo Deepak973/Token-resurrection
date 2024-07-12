@@ -130,7 +130,12 @@
 }
 
 .tablediv::-webkit-scrollbar-track {
-  background: rgba(128, 128, 128, 0); /* Set the background color of the scrollbar track to grey */
+  background: rgba(
+    128,
+    128,
+    128,
+    0
+  ); /* Set the background color of the scrollbar track to grey */
 }
 
 .tablediv::-webkit-scrollbar-thumb {
@@ -138,7 +143,6 @@
   border-radius: 10px; /* Round the corners of the scrollbar thumb */
   border: 1px solid grey; /* Optional: Add a border around the scrollbar thumb */
 }
-
 
 .tablediv table {
   border-collapse: separate;
@@ -184,9 +188,8 @@
   padding: 5px;
 }
 
-
 .trtagbody:hover {
-  background-color: #9662FE;
+  background-color: #9662fe;
   cursor: pointer;
 }
 .trtagbody {
@@ -206,7 +209,7 @@
   margin: 0px 8px;
 }
 
-.tkdetailsdiv{
+.tkdetailsdiv {
   padding: 0px 180px;
 }
 .headingdiv1 {
@@ -238,8 +241,6 @@
   justify-content: center;
   align-items: center; /* To replicate `items-center` from Tailwind */
 }
-
-
 
 .btncheck {
   font-family: monospace;
@@ -295,7 +296,7 @@
 
   left: 20px;
   transition: background-color 300ms ease-out, color 300ms ease-out,
-box-shadow 300ms ease-out;
+    box-shadow 300ms ease-out;
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem; /* 14px */
 }
@@ -311,8 +312,8 @@ box-shadow 300ms ease-out;
 }
 .buttonin1steplist:hover {
   font-weight: 900;
-
-}.buttonin1steplist2 {
+}
+.buttonin1steplist2 {
   font-family: monospace;
   font-size: 1.25rem;
   cursor: pointer;
@@ -323,43 +324,45 @@ box-shadow 300ms ease-out;
   background: white;
   box-shadow: 4px 6px #ff4646;
   margin: 35px 10px;
-  
 }
 .buttonin1steplist2:active {
   box-shadow: none;
   transform: translate(3px, 3px);
 }
 .buttonin1steplist2:hover {
-  font-weight: 900;}
+  font-weight: 900;
+}
 
 /* Define common styles for small screens */
 @media (max-width: 600px) {
-  .buttonin1step,.btncheck, .buttonin11step { margin-top: 10px;
+  .buttonin1step,
+  .btncheck,
+  .buttonin11step {
+    margin-top: 10px;
     padding: 0.25rem 0.5rem; /* 4px 8px */
     font-size: 0.875rem; /* 14px */
-   margin-left: 15px;
-   margin-right: 15px; /* Adjust margin if needed */
+    margin-left: 15px;
+    margin-right: 15px; /* Adjust margin if needed */
   }
 }
 
 /* Ensure hover and active states are also considered */
-.btncheck:hover, .buttonin11step:hover {
+.btncheck:hover,
+.buttonin11step:hover {
   font-weight: 900;
   /* Additional hover styles */
 }
 
-.btncheck:active, .buttonin11step:active {
+.btncheck:active,
+.buttonin11step:active {
   box-shadow: none;
   transform: translate(3px, 3px);
 }
-
-
 
 /*This is for the landing page, */
 
 /* styles/home.css */
 /* Assuming you have a CSS file linked, e.g., styles.css */
-
 
 .buttonin1stp:active {
   box-shadow: none;

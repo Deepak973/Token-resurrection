@@ -13,6 +13,11 @@ function Activeproposal({ data }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const chainName = {
+    10: "Optimism",
+    1: "Ethereum",
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -192,6 +197,12 @@ function Activeproposal({ data }) {
                 >
                   Click to view Schema
                 </a>
+              </div>
+            </div>
+            <div className={propstyle.divdetail}>
+              <div className={propstyle.titledetail}>Chain</div>
+              <div className={propstyle.titlecontent}>
+                {chainName[selectedData?.chainId]}
               </div>
             </div>
             <div className={propstyle.divdetail}>
