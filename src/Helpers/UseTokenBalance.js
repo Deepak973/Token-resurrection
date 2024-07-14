@@ -8,6 +8,8 @@ const ERC20_ABI = [
 const RPC = {
   1: "https://eth-mainnet.g.alchemy.com/v2/zfBCiqBcZwblbUR4xvQUO5FVEYvkVdQ-",
   10: "https://opt-mainnet.g.alchemy.com/v2/9WBG_MVRsmOhaR5bEVKYclPwb_q9tIiw",
+  42161:
+    "https://arb-mainnet.g.alchemy.com/v2/9WBG_MVRsmOhaR5bEVKYclPwb_q9tIiw",
 };
 
 export const getTokenBalance = async (tokenAddress, walletAddress, chainId) => {

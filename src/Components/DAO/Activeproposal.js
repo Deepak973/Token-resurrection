@@ -2,16 +2,63 @@
 import React, { useState, useEffect } from "react";
 import propstyle from "./proposals.module.css";
 import Modal from "react-modal";
+import { Modal as AntdModal } from "antd";
 import formstyle from "../SubmitDao/stepfrom.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip, message, Skeleton, Empty } from "antd";
+import { formatUnits } from "viem";
 
 function Activeproposal({ data }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [filteredData, setFilteredData] = useState();
+
+  const TransactionsModalContent = () => {
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Filtered addresses based on search query
+    const filteredAddresses = selectedData.addresses.filter((transaction) =>
+      transaction.from.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    return (
+      <div className="p-4 max-h-80 overflow-y-auto">
+        <h2 className="text-lg font-bold mb-4">
+          Addresses of Token Holder and Amount locked
+        </h2>
+        <input
+          type="text"
+          placeholder="Search address"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="mb-4 p-2 border border-gray-300 rounded w-full"
+        />
+        <div className="space-y-2 font-bold">
+          {filteredAddresses.map((transaction, index) => (
+            <div
+              key={index}
+              className={`flex justify-between py-2 ${
+                index % 2 === 0 ? "bg-gray-100" : "bg-white"
+              }`}
+            >
+              <div className="text-gray-800">
+                {transaction.from} {/* Adjust length as needed */}
+              </div>
+              <div className="text-gray-600">
+                {selectedData.tokenName === "USDC"
+                  ? (+formatUnits(transaction.amount, 6)).toFixed(4)
+                  : (+formatUnits(transaction.amount, 18)).toFixed(4)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   const chainName = {
     10: "Optimism",
@@ -25,6 +72,15 @@ function Activeproposal({ data }) {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleOpenModal = () => {
+    console.log(":goinf");
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
 
   const openModal = (data) => {
     setSelectedData(data);
@@ -50,13 +106,21 @@ function Activeproposal({ data }) {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
   console.log(data);
-  const filteredData = data.filter(
-    (item) =>
-      item.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tokenName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.contractAddress.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    if (data.length > 0) {
+      const filteredData = data?.filter(
+        (item) =>
+          item.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.tokenName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.contractAddress.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredData(filteredData);
+    }
+
+    console.log(filteredData);
+  }, [data]);
 
   return (
     <div className={propstyle.outerdivprop1}>
@@ -188,6 +252,18 @@ function Activeproposal({ data }) {
               </div>
             </div>
             <div className={propstyle.divdetail}>
+              <div className={propstyle.titledetail}> View Token Holders</div>
+              <div className={propstyle.titlecontent}>
+                <Tooltip title="Click here to view addresses with locked tokens and their amounts.">
+                  <button text-blue-900 onClick={handleOpenModal}>
+                    {/* <strong> */}
+                    Token Holders ↗{/* </strong> */}
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
+
+            <div className={propstyle.divdetail}>
               <div className={propstyle.titledetail}>EAS schema UID</div>
               <div className={propstyle.titlecontent}>
                 <a
@@ -218,6 +294,16 @@ function Activeproposal({ data }) {
           </div>
         )}
       </Modal>
+      <AntdModal
+        title="Explore Holders List"
+        visible={modalVisible}
+        onCancel={handleCloseModal}
+        footer={null}
+        className="modal"
+        bodyStyle={{ maxHeight: "90vh", overflowY: "auto" }}
+      >
+        <TransactionsModalContent />
+      </AntdModal>
     </div>
   );
 }

@@ -19,6 +19,7 @@ const TokenRow = ({
 
   useEffect(() => {
     if (storedAddress) {
+      console.log(token);
       getTokenBalance(token.tokenAddress, storedAddress, selectedChain).then(
         setBalance
       );

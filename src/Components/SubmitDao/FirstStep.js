@@ -101,6 +101,7 @@ const FirstStep = ({
             >
               <option value={1}>Ethereum</option>
               <option value={10}>Optimism</option>
+              <option value={42161}>Arbitrum</option>
             </select>
           </Tooltip>
         </div>

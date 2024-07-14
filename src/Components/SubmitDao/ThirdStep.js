@@ -99,6 +99,7 @@ const ThirdStep = ({
       setSubmissionStatus("error");
       setErrorMessage(response.message);
       message.info("Proposal Already exists");
+      setSubmissionProgress("");
       return;
     }
     try {
@@ -160,7 +161,7 @@ const ThirdStep = ({
         selectedToken: selectedToken,
         ResolverAddress: resolverAddress,
         schemUid: SchemaUid,
-        addresses,
+        addresses: transactions,
         totalAmount: Totalamount,
         totalAccount: getHolderscount,
         chainId: selectedChain,
@@ -228,15 +229,15 @@ const ThirdStep = ({
     setErrorMessage("");
   };
 
-  if (submissionStatus === "success") {
-    setSubmissionStatus("");
-    return <SuccessResult onReset={handleReset} />;
-  }
+  // if (submissionStatus === "success") {
+  //   setSubmissionStatus("");
+  //   return <SuccessResult onReset={handleReset} />;
+  // }
 
-  if (submissionStatus === "error") {
-    setSubmissionStatus("");
-    return <FailureResult onReset={handleReset} message={errorMessage} />;
-  }
+  // if (submissionStatus === "error") {
+  //   setSubmissionStatus("");
+  //   return <FailureResult onReset={handleReset} message={errorMessage} />;
+  // }
 
   return (
     <div>
@@ -296,7 +297,9 @@ const ThirdStep = ({
             className={formstyle.buttonin1step}
             onClick={handleSubmit}
             loading={submitting}
-            disabled={!selectedToken || submitting}
+            disabled={
+              !selectedToken || submitting || !Totalamount || !getHolderscount
+            }
           >
             Submit
           </button>
@@ -310,6 +313,12 @@ const ThirdStep = ({
           )}
         </div>
       </div>
+      {submissionStatus === "success" && (
+        <SuccessResult onReset={handleReset} />
+      )}
+      {submissionStatus === "error" && (
+        <FailureResult onReset={handleReset} message={errorMessage} />
+      )}
     </div>
   );
 };

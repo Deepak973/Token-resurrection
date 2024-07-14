@@ -27,8 +27,6 @@ const StepForm = () => {
   const [selectedChain, setSelectedChain] = useState(1);
   const [tokens, setTokens] = useState([]);
 
-  const ETHERSCAN_API_KEY = "JGWS1C3GSNW3GQYVU5AHMB5Y2I9KUI6YHW";
-
   const handleOpenModal = () => {
     setModalVisible(true);
   };
@@ -89,6 +87,7 @@ const StepForm = () => {
   useEffect(() => {
     let TOKENS = [];
 
+    console.log(selectedChain);
     switch (selectedChain) {
       case 1:
         TOKENS = [
@@ -116,6 +115,14 @@ const StepForm = () => {
           {
             tokenName: "OP",
             tokenAddress: "0x4200000000000000000000000000000000000042",
+          },
+        ];
+        setTokens(TOKENS);
+      case 42161:
+        TOKENS = [
+          {
+            tokenName: "ARB",
+            tokenAddress: "0x912CE59144191C1204E64559FE8253a0e49E6548",
           },
         ];
         setTokens(TOKENS);
