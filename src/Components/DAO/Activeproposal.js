@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 import propstyle from "./proposals.module.css";
 import Modal from "react-modal";
 import { Modal as AntdModal } from "antd";
-import formstyle from "../SubmitDao/stepfrom.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip, message, Skeleton, Empty } from "antd";
-import { formatUnits } from "viem";
-import axios from "axios";
+import TransactionsModalContent from "./TransactionsModalContent";
 
 function Activeproposal({ data }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,119 +15,100 @@ function Activeproposal({ data }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [filteredData, setFilteredData] = useState();
-  const [transactionHash, setTranactionHash] = useState([]);
-  const [showTransaction, setShowTransaction] = useState(false);
 
-  const explorerLinks = {
-    1: "https://etherscan.io/tx/",
-    10: "https://optimistic.etherscan.io/tx/",
-    42161: "https://arbiscan.io/tx/",
-  };
+  //   const addresses = selectedData?.addresses || [];
+  //   const tokenName = selectedData?.tokenName || "";
+  //   const chainId = selectedData?.chainId || "";
 
-  const getTransactionHash = async (transaction) => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/proposals/transactionhash?from=${transaction.from}&to=${selectedData.contractAddress}&token=${selectedData.tokenName}&chainId=${selectedData.chainId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response.data[0].txHash);
-      setTranactionHash(response.data[0].txHash);
-      setShowTransaction(true);
-    } catch (error) {
-      console.error("Error fetching data from API:", error);
-      message.error("Failed to fetch data from API");
-    }
-  };
+  //   // Filtered addresses based on search query
+  //   const filteredAddresses = addresses.filter((transaction) =>
+  //     (transaction.from || "").toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
 
-  const TransactionsModalContent = () => {
-    const [searchQuery, setSearchQuery] = useState("");
+  //   // Safe formatting function
+  //   const safeFormatUnits = (amount, decimals) => {
+  //     try {
+  //       return (+formatUnits(amount, decimals)).toFixed(4);
+  //     } catch (error) {
+  //       console.error("Error formatting units:", error);
+  //       return "0.0000";
+  //     }
+  //   };
 
-    // Filtered addresses based on search query
-    const filteredAddresses = selectedData.addresses.filter((transaction) =>
-      transaction.from.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    return (
-      <div className="w-full max-w-3xl mx-auto">
-        {!showTransaction ? (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6">
-              Addresses of Token Holder and Amount Locked
-            </h2>
-            <input
-              type="text"
-              placeholder="Search address"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="mb-6 p-3 border border-gray-300 rounded w-full"
-            />
-            <div className="max-h-96 overflow-y-auto">
-              <div className="grid grid-cols-3 gap-4 font-semibold mb-4 px-4">
-                <div>Address</div>
-                <div>Amount</div>
-                <div>Actions</div>
-              </div>
-              {filteredAddresses.map((transaction, index) => (
-                <div
-                  key={index}
-                  className={`grid grid-cols-3 gap-4 py-3 px-4 ${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                  }`}
-                >
-                  <div className="text-gray-800 truncate">
-                    {transaction.from}
-                  </div>
-                  <div className="text-gray-600">
-                    {selectedData.tokenName === "USDC"
-                      ? (+formatUnits(transaction.amount, 6)).toFixed(4)
-                      : (+formatUnits(transaction.amount, 18)).toFixed(4)}
-                  </div>
-                  <button
-                    onClick={() => getTransactionHash(transaction)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
-                  >
-                    View Transactions
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6">Transactions</h2>
-            <div className="max-h-96 overflow-y-auto mb-6">
-              {transactionHash.map((transaction, index) => (
-                <div className="text-gray-800 mb-4" key={transaction}>
-                  Transaction {index + 1}
-                  <a
-                    href={`${
-                      explorerLinks[selectedData.chainId]
-                    }${transaction}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block mb-2 break-all text-blue-500 hover:text-blue-600"
-                  >
-                    {transaction}
-                  </a>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setShowTransaction(false)}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-            >
-              Back to Addresses
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  };
-
+  //   return (
+  //     <div className="w-full max-w-3xl mx-auto">
+  //       {!showTransaction ? (
+  //         <div className="p-6">
+  //           <h2 className="text-2xl font-bold mb-6">
+  //             Addresses of Token Holder and Amount Locked
+  //           </h2>
+  //           <input
+  //             type="text"
+  //             placeholder="Search address"
+  //             value={searchQuery}
+  //             onChange={(e) => setSearchQuery(e.target.value)}
+  //             className="mb-6 p-3 border border-gray-300 rounded w-full"
+  //           />
+  //           <div className="max-h-96 overflow-y-auto">
+  //             <div className="grid grid-cols-3 gap-4 font-semibold mb-4 px-4">
+  //               <div>Address</div>
+  //               <div>Amount</div>
+  //               <div>Actions</div>
+  //             </div>
+  //             {filteredAddresses.map((transaction, index) => (
+  //               <div
+  //                 key={index}
+  //                 className={`grid grid-cols-3 gap-4 py-3 px-4 ${
+  //                   index % 2 === 0 ? "bg-gray-100" : "bg-white"
+  //                 }`}
+  //               >
+  //                 <div className="text-gray-800 truncate">
+  //                   {transaction.from || "N/A"}
+  //                 </div>
+  //                 <div className="text-gray-600">
+  //                   {tokenName === "USDC"
+  //                     ? safeFormatUnits(transaction.amount || "0", 6)
+  //                     : safeFormatUnits(transaction.amount || "0", 18)}
+  //                 </div>
+  //                 <button
+  //                   onClick={() => getTransactionHash(transaction)}
+  //                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
+  //                 >
+  //                   View Transactions
+  //                 </button>
+  //               </div>
+  //             ))}
+  //           </div>
+  //         </div>
+  //       ) : (
+  //         <div className="p-6">
+  //           <h2 className="text-2xl font-bold mb-6">Transactions</h2>
+  //           <div className="max-h-96 overflow-y-auto mb-6">
+  //             {(transactionHash || []).map((transaction, index) => (
+  //               <div className="text-gray-800 mb-4" key={transaction}>
+  //                 Transaction {index + 1}
+  //                 <a
+  //                   href={`${explorerLinks[chainId] || "#"}${transaction}`}
+  //                   target="_blank"
+  //                   rel="noopener noreferrer"
+  //                   className="block mb-2 break-all text-blue-500 hover:text-blue-600"
+  //                 >
+  //                   {transaction}
+  //                 </a>
+  //               </div>
+  //             ))}
+  //           </div>
+  //           <button
+  //             onClick={() => setShowTransaction(false)}
+  //             className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+  //           >
+  //             Back to Addresses
+  //           </button>
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // };
   const chainName = {
     10: "Optimism",
     1: "Ethereum",
@@ -150,8 +129,6 @@ function Activeproposal({ data }) {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setShowTransaction(false);
-    setTranactionHash([]);
   };
 
   const openModal = (data) => {
@@ -179,9 +156,8 @@ function Activeproposal({ data }) {
     setSearchQuery(e.target.value);
   };
 
-  console.log(data);
   useEffect(() => {
-    if (data.length > 0) {
+    if (data && data.length > 0) {
       const filteredData = data?.filter(
         (item) =>
           item.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -212,7 +188,7 @@ function Activeproposal({ data }) {
         <div className={propstyle.tablediv}>
           {loading ? (
             <Skeleton active paragraph={{ rows: 10 }} block={true} />
-          ) : filteredData.length > 0 ? (
+          ) : filteredData && filteredData.length > 0 ? (
             <table>
               <thead className="text-center">
                 <tr>
@@ -374,7 +350,7 @@ function Activeproposal({ data }) {
         className="modal"
         bodyStyle={{ maxHeight: "90vh", overflowY: "auto" }}
       >
-        <TransactionsModalContent />
+        <TransactionsModalContent selectedData={selectedData} />
       </AntdModal>
     </div>
   );

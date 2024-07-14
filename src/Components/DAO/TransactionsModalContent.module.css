@@ -1,0 +1,98 @@
+.container {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.input {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  width: 100%;
+}
+
+.list {
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.rowEven {
+  background-color: #f3f4f6;
+}
+
+.rowOdd {
+  background-color: #ffffff;
+}
+
+.address {
+  color: #1f2937;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amount {
+  color: #4b5563;
+}
+
+.button {
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #2563eb;
+}
+
+.backButton {
+  background-color: #6b7280;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.backButton:hover {
+  background-color: #4b5563;
+}
+
+.transactionLink {
+  display: block;
+  margin-bottom: 0.5rem;
+  word-break: break-all;
+  color: #3b82f6;
+}
+
+.transactionLink:hover {
+  color: #2563eb;
+}
